@@ -15,10 +15,22 @@ resource "libvirt_volume" "fedora-qcow2" {
   format = "qcow2"
 }
 
+data "template_file" "user_data" {
+  template = file("${path.module}/config/cloud_init.yaml")
+}
+
+resource "libvirt_cloudinit_disk" "commoninit" {
+  name = "commoninit.iso"
+  user_data = data.template_file.user_data.rendered
+  pool = libvirt_pool.terraform.name
+}
+
 resource "libvirt_domain" "domain-fedora" {
   name = var.vm_hostname
   memory = "512"
   vcpu = 1
+
+  cloudinit = libvirt_cloudinit_disk.commoninit.id
 
   network_interface {
     network_name = "default"
