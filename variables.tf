@@ -1,6 +1,6 @@
 variable "libvirt_disk_path" {
   description = "path for libvirt pool"
-  default = "/tmp/terraform"
+  default = "/tmp/terraform-libvirt-pool"
 }
 
 variable "linux_cloud_img_url" {
