@@ -3,8 +3,8 @@ variable "libvirt_disk_path" {
   default = "/tmp/terraform-libvirt-pool"
 }
 
-variable "linux_cloud_img_url" {
-  description = "linux cloud image"
+variable "fedora_cloud_img_url" {
+  description = "fedora cloud image"
   default = "https://download.fedoraproject.org/pub/fedora/linux/releases/33/Cloud/x86_64/images/Fedora-Cloud-Base-33-1.2.x86_64.qcow2"
 }
 
