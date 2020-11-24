@@ -23,7 +23,7 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 
 resource "libvirt_domain" "domain-fedora" {
   name = var.vm_hostname
-  memory = "512"
+  memory = "1024"
   vcpu = 1
 
   cloudinit = libvirt_cloudinit_disk.commoninit.id

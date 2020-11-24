@@ -1,0 +1,17 @@
+---
+- hosts: terraform-libvirt
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+    - name: Install nginx
+      package:
+          name: "nginx"
+          state: present
+
+    - name: Enable nginx service
+      systemd:
+        name: nginx
+        enabled: true
+        state: started
