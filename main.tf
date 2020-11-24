@@ -59,4 +59,28 @@ resource "libvirt_domain" "domain-fedora" {
   disk {
     volume_id = libvirt_volume.fedora-qcow2.id
   }
+
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "echo 'Hello, World'"
+  #   ]
+
+  #   connection {
+  #     type = "ssh"
+  #     user = var.ssh_username
+  #     host = libvirt_domain.domain-fedora.network_interface[0].addresses[0]
+  #     private_key = file(var.ssh_private_key)
+  #     timeout = "30s"
+  #   }
+  # }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "[terraform]" > terraform.ini
+      echo "${libvirt_domain.domain-fedora.network_interface[0].addresses[0]}" >> terraform.ini
+      echo "[terraform:vars]" >> terraform.ini
+      echo "ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'" >> terraform.ini
+      ansible-playbook -u ${var.ssh_username} --private-key ${var.ssh_private_key} -vvv ansible/playbook.yaml
+    EOT
+  }
 }
