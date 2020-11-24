@@ -2,6 +2,16 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+resource "libvirt_network" "terraform" {
+  name = "terraform"
+  domain = "terraform.vm"
+  mode = "nat"
+  addresses = ["10.0.100.0/24"]
+  dns {
+    local_only = true
+  }
+}
+
 resource "libvirt_pool" "terraform" {
   name = "terraform"
   type = "dir"
@@ -29,7 +39,7 @@ resource "libvirt_domain" "domain-fedora" {
   cloudinit = libvirt_cloudinit_disk.commoninit.id
 
   network_interface {
-    network_name = "default"
+    network_name = "terraform"
     wait_for_lease = true
     hostname = var.vm_hostname
   }
