@@ -34,6 +34,18 @@ resource "libvirt_domain" "domain-fedora" {
     hostname = var.vm_hostname
   }
 
+  console {
+    type = "pty"
+    target_type = "serial"
+    target_port = "0"
+  }
+
+  console {
+    type = "pty"
+    target_type = "virtio"
+    target_port = "1"
+  }
+
   disk {
     volume_id = libvirt_volume.fedora-qcow2.id
   }
