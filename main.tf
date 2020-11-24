@@ -15,13 +15,9 @@ resource "libvirt_volume" "fedora-qcow2" {
   format = "qcow2"
 }
 
-data "template_file" "user_data" {
-  template = file("${path.module}/config/cloud_init.yaml")
-}
-
 resource "libvirt_cloudinit_disk" "commoninit" {
   name = "commoninit.iso"
-  user_data = data.template_file.user_data.rendered
+  user_data = file("${path.module}/config/cloud_init.yaml")
   pool = libvirt_pool.terraform.name
 }
 
