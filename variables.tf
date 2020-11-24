@@ -15,10 +15,10 @@ variable "vm_hostname" {
 
 variable "ssh_username" {
   description = "the ssh user to use"
-  default = "root"
+  default = "fedora"
 }
 
 variable "ssh_private_key" {
   description = "the private key to use"
-  default = "~/.ssh/id_rsa"
+  default = "./config/fedora_rsa"
 }
