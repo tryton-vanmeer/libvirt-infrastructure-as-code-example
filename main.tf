@@ -60,20 +60,6 @@ resource "libvirt_domain" "domain-fedora" {
     volume_id = libvirt_volume.fedora-qcow2.id
   }
 
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "echo 'Hello, World'"
-  #   ]
-
-  #   connection {
-  #     type = "ssh"
-  #     user = var.ssh_username
-  #     host = libvirt_domain.domain-fedora.network_interface[0].addresses[0]
-  #     private_key = file(var.ssh_private_key)
-  #     timeout = "30s"
-  #   }
-  # }
-
   provisioner "local-exec" {
     command = <<EOT
       echo "[terraform]" > terraform.ini
