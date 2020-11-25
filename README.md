@@ -1,4 +1,31 @@
-# Terraform Libvirt Example
+# Libvirt Infrastructure as Code Example
+
+Demo of deploying libvirt VMs using Terraform and Ansible.
+
+## Requirements
+
++ [Terraform](https://www.terraform.io/downloads.html)
++ [terraform-provider-libvirt](https://github.com/dmacvicar/terraform-provider-libvirt#downloading)
++ libvirt
+
+On Arch Linux, Terraform and the provider can be installed:
+
+```
+# pacman -S terraform terraform-provider-libvirt
+```
+
+Otherwise refer to Terraform and terraform-provider-libvirt documentation above.
+
+## Running
+
+```
+$ terraform init
+$ terraform plan
+$ terraform appy
+$ terraform destroy
+
+```
+
 
 ### References
 + https://github.com/dmacvicar/terraform-provider-libvirt
