@@ -10,7 +10,7 @@ variable "fedora_cloud_img_url" {
 
 variable "vm_hostname" {
   description = "vm hostname"
-  default = "terraform-libvirt-ansible"
+  default = "nginx"
 }
 
 variable "ssh_username" {
