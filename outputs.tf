@@ -1,7 +1,7 @@
 output "ip" {
-  value = libvirt_domain.domain-fedora.network_interface[0].addresses[0]
+  value = libvirt_domain.nginx.network_interface[0].addresses[0]
 }
 
 output "url" {
-  value = "http://${libvirt_domain.domain-fedora.network_interface[0].addresses[0]}"
+  value = "http://${libvirt_domain.nginx.network_interface[0].addresses[0]}"
 }

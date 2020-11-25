@@ -18,8 +18,8 @@ resource "libvirt_pool" "terraform" {
   path = var.libvirt_disk_path
 }
 
-resource "libvirt_volume" "fedora-qcow2" {
-  name = "fedora-qcow2"
+resource "libvirt_volume" "nginx" {
+  name = "nginx.qcow2"
   pool = libvirt_pool.terraform.name
   source = var.fedora_cloud_img_url
   format = "qcow2"
@@ -31,7 +31,7 @@ resource "libvirt_cloudinit_disk" "commoninit" {
   pool = libvirt_pool.terraform.name
 }
 
-resource "libvirt_domain" "domain-fedora" {
+resource "libvirt_domain" "nginx" {
   name = var.vm_hostname
   memory = "1024"
   vcpu = 1
@@ -57,13 +57,13 @@ resource "libvirt_domain" "domain-fedora" {
   }
 
   disk {
-    volume_id = libvirt_volume.fedora-qcow2.id
+    volume_id = libvirt_volume.nginx.id
   }
 
   provisioner "local-exec" {
     command = <<EOT
       echo "[terraform]" > terraform.ini
-      echo "${libvirt_domain.domain-fedora.network_interface[0].addresses[0]}" >> terraform.ini
+      echo "${libvirt_domain.nginx.network_interface[0].addresses[0]}" >> terraform.ini
       echo "[terraform:vars]" >> terraform.ini
       echo "ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'" >> terraform.ini
       ansible-playbook -u ${var.ssh_username} --private-key ${var.ssh_private_key} -vvv ansible/playbook.yaml
