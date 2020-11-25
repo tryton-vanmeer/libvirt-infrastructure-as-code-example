@@ -66,7 +66,7 @@ resource "libvirt_domain" "nginx" {
       echo "${libvirt_domain.nginx.network_interface[0].addresses[0]}" >> terraform.ini
       echo "[terraform:vars]" >> terraform.ini
       echo "ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'" >> terraform.ini
-      ansible-playbook -u ${var.ssh_username} --private-key ${var.ssh_private_key} -vvv ansible/playbook.yaml
+      ansible-playbook -u ${var.ssh_username} --private-key ${var.ssh_private_key} ansible/playbook.yaml
     EOT
   }
 }
