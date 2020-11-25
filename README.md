@@ -2,6 +2,8 @@
 
 Demo of deploying libvirt VMs using Terraform and Ansible.
 
+Refer to comments in source files for further explanations.
+
 ## Requirements
 
 + [Terraform](https://www.terraform.io/downloads.html)

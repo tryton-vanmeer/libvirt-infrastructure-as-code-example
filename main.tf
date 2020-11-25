@@ -1,7 +1,10 @@
+# Connect to the libvirt instance. qemu+ssh://user@example/system could be used for a remote connection.
 provider "libvirt" {
   uri = "qemu:///system"
 }
 
+# Create a virtual network for terraform.
+# Using dnsmasq with `server=/terraform.vm/10.0.100.1` would allow reaching the VM at hostname.terraform.vm.
 resource "libvirt_network" "terraform" {
   name = "terraform"
   domain = "terraform.vm"
@@ -12,12 +15,15 @@ resource "libvirt_network" "terraform" {
   }
 }
 
+# Create a libvirt storage pool for terraform.
 resource "libvirt_pool" "terraform" {
   name = "terraform"
   type = "dir"
   path = var.libvirt_disk_path
 }
 
+# Create a storage volume for the domain.
+# This can be a local image or a remote image, like the Fedora Cloud Base in this case.
 resource "libvirt_volume" "nginx" {
   name = "nginx.qcow2"
   pool = libvirt_pool.terraform.name
@@ -25,12 +31,17 @@ resource "libvirt_volume" "nginx" {
   format = "qcow2"
 }
 
+# Setup the cloud init disk.
+# the pubkey is added to `ssh_authorized_keys`.
+# For the purpose of this example, an SSH key-pair was created under config/ so cloud_init.yaml doesn't need edited.
+# To SSH into the VM, specify the private key: `ssh -i config/fedora_rsa`.
 resource "libvirt_cloudinit_disk" "commoninit" {
   name = "commoninit.iso"
   user_data = file("${path.module}/config/cloud_init.yaml")
   pool = libvirt_pool.terraform.name
 }
 
+# Create the domain; i.e the VM.
 resource "libvirt_domain" "nginx" {
   name = var.vm_hostname
   memory = "1024"
@@ -44,6 +55,7 @@ resource "libvirt_domain" "nginx" {
     hostname = var.vm_hostname
   }
 
+  # Add consoles that cloun-init expects.
   console {
     type = "pty"
     target_type = "serial"
@@ -60,6 +72,8 @@ resource "libvirt_domain" "nginx" {
     volume_id = libvirt_volume.nginx.id
   }
 
+  # Write out an inventory file and run the playbook under ansible/.
+  # Playbook just installs NGINX and enables the service.
   provisioner "local-exec" {
     command = <<EOT
       echo "[terraform]" > terraform.ini
