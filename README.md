@@ -20,6 +20,10 @@ Otherwise refer to Terraform and terraform-provider-libvirt documentation above.
 
 ## Running
 
+### Terraform
+
+Use Terraform to build the VMs.
+
 ```
 $ terraform init
 $ terraform plan
