@@ -1,3 +1,18 @@
+terraform {
+ required_version = ">= 0.13"
+  backend "local" {
+    path = ".terraform/state/terraform.tfstate"
+  }
+
+  # Refer to https://github.com/dmacvicar/terraform-provider-libvirt/blob/master/docs/migration-13.md for more info.
+  required_providers {
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "0.6.3"
+    }
+  }
+}
+
 # Connect to the libvirt instance. qemu+ssh://user@example/system could be used for a remote connection.
 provider "libvirt" {
   uri = "qemu:///system"
