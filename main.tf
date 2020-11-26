@@ -31,13 +31,20 @@ resource "libvirt_volume" "nginx" {
   format = "qcow2"
 }
 
-# Setup the cloud init disk.
-# the pubkey is added to `ssh_authorized_keys`.
-# For the purpose of this example, an SSH key-pair was created under config/ so cloud_init.yaml doesn't need edited.
-# To SSH into the VM, specify the private key: `ssh -i config/fedora_rsa`.
+# Template out the userdata.yaml file for cloud-init.
+# Passes in the content of the SSH key set in var.ssh_public_key.
+data "template_file" "userdata" {
+  template = file("${path.module}/templates/userdata.yaml")
+
+  vars = {
+    ssh_public_key = file(var.ssh_public_key)
+  }
+}
+
+# Create the cloud-init disk.
 resource "libvirt_cloudinit_disk" "commoninit" {
   name = "commoninit.iso"
-  user_data = file("${path.module}/config/cloud_init.yaml")
+  user_data = data.template_file.userdata.rendered
   pool = libvirt_pool.terraform.name
 }
 
