@@ -36,3 +36,4 @@ $ terraform destroy
 ### References
 + https://github.com/dmacvicar/terraform-provider-libvirt
 + https://blog.ruanbekker.com/blog/2020/10/08/using-the-libvirt-provisioner-with-terraform-for-kvm/
++ https://www.linkbynet.com/produce-an-ansible-inventory-with-terraform
