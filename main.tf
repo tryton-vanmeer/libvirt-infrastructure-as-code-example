@@ -89,15 +89,8 @@ resource "libvirt_domain" "nginx" {
     volume_id = libvirt_volume.nginx.id
   }
 
-  # Write out an inventory file and run the playbook under ansible/.
-  # Playbook just installs NGINX and enables the service.
+  # Provision the VM with Ansible.
   provisioner "local-exec" {
-    command = <<EOT
-      echo "[terraform]" > terraform.ini
-      echo "${libvirt_domain.nginx.network_interface[0].addresses[0]}" >> terraform.ini
-      echo "[terraform:vars]" >> terraform.ini
-      echo "ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'" >> terraform.ini
-      ansible-playbook -u ${var.ssh_username} --private-key ${var.ssh_private_key} ansible/playbook.yaml
-    EOT
+    command = "ansible-playbook -u ${var.ssh_username} -i '${self.network_interface[0].addresses[0]},' --private-key ${var.ssh_private_key} provision.yaml"
   }
 }
