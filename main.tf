@@ -41,10 +41,20 @@ data "template_file" "userdata" {
   }
 }
 
+# Template out the metadata.yaml file for cloud-init.
+data "template_file" "metadata" {
+  template = file("${path.module}/templates/metadata.yaml")
+
+  vars = {
+    hostname = var.vm_hostname
+  }
+}
+
 # Create the cloud-init disk.
 resource "libvirt_cloudinit_disk" "commoninit" {
   name = "commoninit.iso"
   user_data = data.template_file.userdata.rendered
+  meta_data = data.template_file.metadata.rendered
   pool = libvirt_pool.terraform.name
 }
 
