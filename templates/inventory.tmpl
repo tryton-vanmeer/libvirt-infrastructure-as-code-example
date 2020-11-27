@@ -1,0 +1,4 @@
+[servers]
+%{ for domain in domains ~}
+${domain.name} ansible_host=${domain.network_interface[0].addresses[0]}
+%{ endfor ~}
