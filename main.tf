@@ -38,11 +38,11 @@ resource "libvirt_pool" "terraform" {
 }
 
 # Create a storage volume for the domain.
-# This can be a local image or a remote image, like the Fedora Cloud Base in this case.
+# This can be a local image or a remote image like the Fedora Cloud Base in this case.
 resource "libvirt_volume" "nginx" {
   name = "nginx.qcow2"
   pool = libvirt_pool.terraform.name
-  source = var.fedora_cloud_img_url
+  source = "https://download.fedoraproject.org/pub/fedora/linux/releases/33/Cloud/x86_64/images/Fedora-Cloud-Base-33-1.2.x86_64.qcow2"
   format = "qcow2"
 }
 
@@ -106,6 +106,6 @@ resource "libvirt_domain" "nginx" {
 
   # Provision the VM with Ansible.
   provisioner "local-exec" {
-    command = "ansible-playbook -u ${var.ssh_username} -i '${self.network_interface[0].addresses[0]},' --private-key ${var.ssh_private_key} provision.yaml"
+    command = "ansible-playbook -u fedora -i '${self.network_interface[0].addresses[0]},' --private-key ${var.ssh_private_key} provision.yaml"
   }
 }
