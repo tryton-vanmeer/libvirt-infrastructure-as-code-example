@@ -106,6 +106,6 @@ resource "libvirt_domain" "nginx" {
 
   # Provision the VM with Ansible.
   provisioner "local-exec" {
-    command = "ansible-playbook -u fedora -i '${self.network_interface[0].addresses[0]},' --private-key ${var.ssh_private_key} provision.yaml"
+    command = "ansible-playbook -u ${var.ssh_username} -i '${self.network_interface[0].addresses[0]},' --private-key ${var.ssh_private_key} provision.yaml"
   }
 }

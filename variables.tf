@@ -8,6 +8,11 @@ variable "hostname" {
   default = "nginx"
 }
 
+variable "ssh_username" {
+  description = "Name of user for SSH."
+  default = "fedora"
+}
+
 variable "ssh_private_key" {
   description = "Location of SSH private key"
   default = "~/.ssh/id_rsa"
