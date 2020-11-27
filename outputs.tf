@@ -3,5 +3,9 @@ output "ip" {
 }
 
 output "url" {
-  value = "http://${libvirt_domain.nginx.network_interface[0].addresses[0]}"
+  value = "http://${var.hostname}.terraform.vm"
+}
+
+output "ssh" {
+  value = "${var.ssh_username}@${var.hostname}.terraform.vm"
 }
