@@ -3,6 +3,11 @@ variable "libvirt_disk_path" {
   default = "/tmp/terraform-libvirt-pool"
 }
 
+variable "cloud_image_url" {
+  description = "The URL to download the cloud image from."
+  default = "https://download.fedoraproject.org/pub/fedora/linux/releases/33/Cloud/x86_64/images/Fedora-Cloud-Base-33-1.2.x86_64.qcow2"
+}
+
 variable "hostname" {
   description = "Hostname for the VM."
   default = "nginx"

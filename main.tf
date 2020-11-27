@@ -42,7 +42,7 @@ resource "libvirt_pool" "terraform" {
 resource "libvirt_volume" "nginx" {
   name = "nginx.qcow2"
   pool = libvirt_pool.terraform.name
-  source = "https://download.fedoraproject.org/pub/fedora/linux/releases/33/Cloud/x86_64/images/Fedora-Cloud-Base-33-1.2.x86_64.qcow2"
+  source = var.cloud_image_url
   format = "qcow2"
 }
 
