@@ -61,7 +61,7 @@ data "template_file" "metadata" {
   template = file("${path.module}/templates/metadata.yaml")
 
   vars = {
-    hostname = var.vm_hostname
+    hostname = var.hostname
   }
 }
 
@@ -75,7 +75,7 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 
 # Create the domain; i.e the VM.
 resource "libvirt_domain" "nginx" {
-  name = var.vm_hostname
+  name = var.hostname
   memory = "1024"
   vcpu = 1
 
@@ -84,7 +84,7 @@ resource "libvirt_domain" "nginx" {
   network_interface {
     network_name = "terraform"
     wait_for_lease = true
-    hostname = var.vm_hostname
+    hostname = var.hostname
   }
 
   # Add consoles that cloun-init expects.

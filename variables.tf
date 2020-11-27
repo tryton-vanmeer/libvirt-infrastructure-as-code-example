@@ -3,7 +3,7 @@ variable "libvirt_disk_path" {
   default = "/tmp/terraform-libvirt-pool"
 }
 
-variable "vm_hostname" {
+variable "hostname" {
   description = "Hostname for the VM."
   default = "nginx"
 }
